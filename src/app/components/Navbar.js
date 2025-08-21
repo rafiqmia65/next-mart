@@ -1,10 +1,12 @@
 "use client";
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [theme, setTheme] = useState("light");
+  const pathname = usePathname();
 
   // Theme toggle effect
   useEffect(() => {
@@ -14,6 +16,12 @@ export default function Navbar() {
       document.documentElement.classList.remove("dark");
     }
   }, [theme]);
+
+  // function to check active link
+  const isActive = (path) =>
+    pathname === path
+      ? "text-blue-600 dark:text-yellow-400 font-semibold"
+      : "text-gray-700 dark:text-gray-200 hover:text-blue-500";
 
   return (
     <>
@@ -30,23 +38,17 @@ export default function Navbar() {
 
             {/* Desktop Menu */}
             <div className="hidden md:flex space-x-6">
-              <Link
-                href="/"
-                className="text-gray-700 dark:text-gray-200 hover:text-blue-500"
-              >
+              <Link href="/" className={isActive("/")}>
                 Home
               </Link>
-              <Link
-                href="/products"
-                className="text-gray-700 dark:text-gray-200 hover:text-blue-500"
-              >
+              <Link href="/products" className={isActive("/products")}>
                 Products
               </Link>
-              <Link
-                href="/login"
-                className="text-gray-700 dark:text-gray-200 hover:text-blue-500"
-              >
+              <Link href="/login" className={isActive("/login")}>
                 Login
+              </Link>
+              <Link href="/register" className={isActive("/register")}>
+                Register
               </Link>
             </div>
 
@@ -62,7 +64,7 @@ export default function Navbar() {
             <div className="md:hidden">
               <button
                 onClick={() => setIsOpen(!isOpen)}
-                className="text-gray-700 dark:text-gray-200 focus:outline-none"
+                className="text-gray-700 dark:text-gray-200 focus:outline-none cursor-pointer"
               >
                 ☰
               </button>
@@ -72,24 +74,18 @@ export default function Navbar() {
 
         {/* Mobile Dropdown */}
         {isOpen && (
-          <div className="md:hidden bg-white dark:bg-gray-900 px-4 py-3 space-y-2">
-            <Link
-              href="/"
-              className="block text-gray-700 dark:text-gray-200 hover:text-blue-500"
-            >
+          <div className="flex flex-col gap-3 md:hidden  bg-white dark:bg-gray-900 px-4 py-3 space-y-2">
+            <Link href="/" className={isActive("/")}>
               Home
             </Link>
-            <Link
-              href="/products"
-              className="block text-gray-700 dark:text-gray-200 hover:text-blue-500"
-            >
+            <Link href="/products" className={isActive("/products")}>
               Products
             </Link>
-            <Link
-              href="/login"
-              className="block text-gray-700 dark:text-gray-200 hover:text-blue-500"
-            >
+            <Link href="/login" className={isActive("/login")}>
               Login
+            </Link>
+            <Link href="/register" className={isActive("/register")}>
+              Register
             </Link>
           </div>
         )}
