@@ -8,12 +8,15 @@ export default function Hero() {
         {/* Left content */}
         <div className="flex-1 text-center md:text-left">
           <h1 className="text-4xl sm:text-5xl font-extrabold text-gray-900 dark:text-white leading-tight">
-            Showcase & Manage Your{" "}
-            <span className="text-blue-600 dark:text-yellow-400">Products</span>
+            Explore & Manage the Latest{" "}
+            <span className="text-blue-600 dark:text-yellow-400">
+              Tech Gadgets
+            </span>
           </h1>
           <p className="mt-4 text-lg text-gray-600 dark:text-gray-300 max-w-xl">
-            A simple product showcase and management app built with Next.js 15,
-            Tailwind CSS & NextAuth.
+            Discover trending gadgets and manage your collection effortlessly.
+            Built with Next.js 15, Tailwind CSS & NextAuth for a smooth
+            experience.
           </p>
 
           {/* CTA buttons */}
@@ -22,7 +25,7 @@ export default function Hero() {
               href="/products"
               className="px-6 py-3 rounded-lg bg-blue-600 text-white font-medium hover:bg-blue-700 transition"
             >
-              View Products
+              Browse Gadgets
             </Link>
             <Link
               href="/login"
@@ -36,11 +39,11 @@ export default function Hero() {
         {/* Right image */}
         <div className="flex-1">
           <Image
-            src="https://i.ibb.co.com/99R9ggd2/download.jpg"
-            alt="Product showcase"
+            src="https://i.ibb.co.com/VW70fkVd/computer-curvy-monitor-digital-device-53876-97324.jpg"
+            alt="Tech gadgets showcase"
             width={400}
             height={300}
-            className="mx-auto rounded-lg"
+            className="mx-auto rounded-lg shadow-lg"
           />
         </div>
       </div>
