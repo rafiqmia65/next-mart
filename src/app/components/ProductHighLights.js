@@ -1,75 +1,95 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { useParams, useRouter } from "next/navigation";
-import { useSession } from "next-auth/react";
 import Image from "next/image";
+import Link from "next/link";
+import { useEffect, useState } from "react";
 
-export default function ProductDetails() {
-  const { id } = useParams();
-  const router = useRouter();
-  const { data: session, status } = useSession();
-
-  const [product, setProduct] = useState(null);
-
-  useEffect(() => {
-    if (status === "loading") return; // wait for session check
-    if (status === "unauthenticated") {
-      router.push("/login"); // redirect to login if not logged in
-    }
-  }, [status, router]);
+export default function ProductsPage() {
+  const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    async function fetchProduct() {
+    async function fetchProducts() {
       try {
-        const res = await fetch(`/api/products/${id}`);
+        const res = await fetch("/api/products");
+        if (!res.ok) throw new Error(`Failed to fetch: ${res.status}`);
         const data = await res.json();
-        setProduct(data);
+
+        // ✅ Sort by rating (descending) and take top 6
+        const topProducts = data
+          .sort((a, b) => b.rating - a.rating)
+          .slice(0, 6);
+
+        setProducts(topProducts);
       } catch (err) {
-        console.error("Error fetching product:", err);
+        console.error(err);
+        setError(err.message);
+      } finally {
+        setLoading(false);
       }
     }
 
-    if (id) fetchProduct();
-  }, [id]);
+    fetchProducts();
+  }, []);
 
-  if (!product) return <p className="text-center mt-10">Loading details...</p>;
+  if (loading) return <p className="text-center mt-10">Loading products...</p>;
+  if (error)
+    return <p className="text-center text-red-500 mt-10">Error: {error}</p>;
 
   return (
     <div className="p-6 min-h-screen bg-gray-100 dark:bg-gray-950 transition">
-      <div className="max-w-3xl mx-auto bg-white dark:bg-gray-900 shadow-lg rounded-2xl overflow-hidden">
-        <div className="relative w-full h-80">
-          <Image
-            src={product.images?.[0] || "/placeholder.png"}
-            alt={product.name}
-            fill
-            className="object-cover"
-          />
-        </div>
-        <div className="p-6">
-          <h1 className="text-2xl font-bold mb-2 text-gray-900 dark:text-gray-100">
-            {product.name}
-          </h1>
-          <p className="text-gray-600 dark:text-gray-400 mb-2">
-            {product.category} • {product.brand}
-          </p>
-          <p className="text-yellow-500 font-medium">⭐ {product.rating} / 5</p>
-          <p className="mt-2 text-lg font-bold text-blue-600 dark:text-blue-400">
-            ${product.price}
-          </p>
-          <p className="mt-2">{product.description}</p>
-          <p
-            className={`mt-2 font-medium ${
-              product.stock > 0
-                ? "text-green-600 dark:text-green-400"
-                : "text-red-500 dark:text-red-400"
-            }`}
+      <h1 className="text-3xl font-bold mb-8 text-center text-gray-800 dark:text-gray-100">
+        Popular Products
+      </h1>
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        {products.map((p) => (
+          <div
+            key={p._id}
+            className="bg-white dark:bg-gray-900 rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl transition duration-300 flex flex-col"
           >
-            {product.stock > 0
-              ? `Available Stock: ${product.stock}`
-              : "Out of Stock"}
-          </p>
-        </div>
+            <div className="relative w-full h-60">
+              <Image
+                src={p.images?.[0] || "/placeholder.png"}
+                alt={p.name}
+                fill
+                className="object-cover"
+              />
+            </div>
+            <div className="p-5 flex flex-col flex-grow">
+              <div className="flex-grow">
+                <h2 className="text-xl font-semibold mb-1 text-gray-900 dark:text-gray-100">
+                  {p.name}
+                </h2>
+                <p className="text-sm text-gray-500 dark:text-gray-400">
+                  {p.category} • {p.brand}
+                </p>
+                <p className="text-yellow-500 font-medium mt-1">
+                  ⭐ {p.rating} / 5
+                </p>
+                <p className="mt-2 text-lg font-bold text-blue-600 dark:text-blue-400">
+                  ${p.price}
+                </p>
+                <p
+                  className={`mt-1 text-sm ${
+                    p.stock > 0
+                      ? "text-green-600 dark:text-green-400"
+                      : "text-red-500 dark:text-red-400"
+                  }`}
+                >
+                  {p.stock > 0 ? `In Stock (${p.stock})` : "Out of Stock"}
+                </p>
+              </div>
+
+              <Link
+                href={`/products/${p._id}`}
+                className="mt-4 w-full text-center bg-blue-600 hover:bg-blue-700 text-white dark:bg-yellow-500 dark:hover:bg-yellow-600 dark:text-gray-900 font-medium py-2 px-4 rounded-lg transition"
+              >
+                See Details
+              </Link>
+            </div>
+          </div>
+        ))}
       </div>
     </div>
   );
