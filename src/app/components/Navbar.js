@@ -9,17 +9,26 @@ import { FaSun, FaMoon } from "react-icons/fa";
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [theme, setTheme] = useState("light");
+  const [mounted, setMounted] = useState(false); // prevent hydration mismatch
   const pathname = usePathname();
   const { data: session } = useSession();
 
-  // Apply theme
+  // Load theme from localStorage on mount
   useEffect(() => {
-    if (theme === "dark") {
-      document.documentElement.classList.add("dark");
-    } else {
-      document.documentElement.classList.remove("dark");
-    }
-  }, [theme]);
+    const savedTheme = localStorage.getItem("theme") || "light";
+    setTheme(savedTheme);
+    if (savedTheme === "dark") document.documentElement.classList.add("dark");
+    else document.documentElement.classList.remove("dark");
+    setMounted(true);
+  }, []);
+
+  const toggleTheme = () => {
+    const newTheme = theme === "light" ? "dark" : "light";
+    setTheme(newTheme);
+    localStorage.setItem("theme", newTheme);
+    if (newTheme === "dark") document.documentElement.classList.add("dark");
+    else document.documentElement.classList.remove("dark");
+  };
 
   const isActive = (path) =>
     pathname === path
@@ -28,12 +37,13 @@ export default function Navbar() {
 
   const handleLogout = () => signOut({ callbackUrl: "/" });
 
+  if (!mounted) return null; // prevent hydration mismatch
+
   return (
     <>
       <nav className="fixed top-0 left-0 w-full bg-white dark:bg-gray-900 shadow-md z-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between h-16 items-center">
-            {/* Left: Logo */}
             <Link
               href="/"
               className="text-2xl font-bold text-blue-600 dark:text-yellow-400"
@@ -41,7 +51,7 @@ export default function Navbar() {
               NextMart
             </Link>
 
-            {/* Center: Links */}
+            {/* Desktop Links */}
             <div className="hidden md:flex space-x-6 items-center">
               <Link href="/" className={isActive("/")}>
                 Home
@@ -60,13 +70,16 @@ export default function Navbar() {
                   </Link>
                 </>
               ) : (
-                <Link href="/dashboard" className={isActive("/dashboard")}>
+                <Link
+                  href="/dashboard/add-product"
+                  className={isActive("/dashboard/add-product")}
+                >
                   Dashboard
                 </Link>
               )}
             </div>
 
-            {/* Right: Logout + Theme */}
+            {/* Right Controls */}
             <div className="hidden md:flex items-center space-x-3">
               {session && (
                 <button
@@ -77,7 +90,7 @@ export default function Navbar() {
                 </button>
               )}
               <button
-                onClick={() => setTheme(theme === "light" ? "dark" : "light")}
+                onClick={toggleTheme}
                 className="p-2 rounded-full bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-yellow-400 hover:bg-gray-300 dark:hover:bg-gray-600 transition flex items-center justify-center"
               >
                 {theme === "light" ? <FaMoon /> : <FaSun />}
@@ -88,7 +101,7 @@ export default function Navbar() {
             <div className="md:hidden">
               <button
                 onClick={() => setIsOpen(!isOpen)}
-                className="text-gray-700 dark:text-gray-200 focus:outline-none cursor-pointer text-2xl"
+                className="text-gray-700 dark:text-gray-200 text-2xl focus:outline-none"
               >
                 ☰
               </button>
@@ -96,9 +109,9 @@ export default function Navbar() {
           </div>
         </div>
 
-        {/* Mobile Dropdown */}
+        {/* Mobile Menu */}
         {isOpen && (
-          <div className="flex flex-col gap-3 md:hidden bg-white dark:bg-gray-900 px-4 py-3 space-y-2">
+          <div className="flex flex-col gap-3 md:hidden bg-white dark:bg-gray-900 px-4 py-3">
             <Link href="/" className={isActive("/")}>
               Home
             </Link>
@@ -116,7 +129,10 @@ export default function Navbar() {
                 </Link>
               </>
             ) : (
-              <Link href="/dashboard" className={isActive("/dashboard")}>
+              <Link
+                href="/dashboard/add-product"
+                className={isActive("/dashboard/add-product")}
+              >
                 Dashboard
               </Link>
             )}
@@ -130,9 +146,8 @@ export default function Navbar() {
               </button>
             )}
 
-            {/* Mobile Theme Toggle */}
             <button
-              onClick={() => setTheme(theme === "light" ? "dark" : "light")}
+              onClick={toggleTheme}
               className="p-2 rounded-full bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-yellow-400 hover:bg-gray-300 dark:hover:bg-gray-600 transition flex items-center justify-center"
             >
               {theme === "light" ? <FaMoon /> : <FaSun />}
@@ -140,9 +155,7 @@ export default function Navbar() {
           </div>
         )}
       </nav>
-
-      {/* Offset for fixed navbar */}
-      <div className="pt-16" />
+      <div className="pt-16" /> {/* offset for fixed navbar */}
     </>
   );
 }

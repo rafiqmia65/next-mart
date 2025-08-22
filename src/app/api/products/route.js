@@ -18,3 +18,26 @@ export async function GET(req) {
     });
   }
 }
+
+export async function POST(req) {
+  try {
+    const body = await req.json();
+    const collection = dbConnect(collectionNamesObj.productsCollection);
+
+    const result = await collection.insertOne(body);
+
+    return new Response(
+      JSON.stringify({ message: "Product added", id: result.insertedId }),
+      {
+        status: 201,
+        headers: { "Content-Type": "application/json" },
+      }
+    );
+  } catch (err) {
+    console.error("Failed to add product:", err);
+    return new Response(JSON.stringify({ error: "Failed to add product" }), {
+      status: 500,
+      headers: { "Content-Type": "application/json" },
+    });
+  }
+}
