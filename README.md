@@ -42,6 +42,8 @@ NEXTAUTH_SECRET=your_nextauth_secret
 NEXTAUTH_URL=http://localhost:3000
 GOOGLE_CLIENT_ID=your_google_oauth_client_id
 GOOGLE_CLIENT_SECRET=your_google_oauth_client_secret
+DB_NAME=database-name
+NEXT_PUBLIC_MONGODB_URI=database-url
 ```
 
 4. Run the development server:
