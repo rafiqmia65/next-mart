@@ -1,9 +1,21 @@
+"use client";
+
 import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { useSession } from "next-auth/react";
 import { FaFacebook, FaTwitter, FaGithub, FaLinkedin } from "react-icons/fa";
 
 export default function Footer() {
+  const pathname = usePathname();
+  const { data: session } = useSession();
+
+  const isActive = (path) =>
+    pathname === path
+      ? "text-blue-600 dark:text-yellow-400 font-semibold"
+      : "text-gray-600 dark:text-gray-400 hover:text-blue-500 dark:hover:text-yellow-400 transition";
+
   return (
-    <footer className="bg-gray-100 dark:bg-gray-900 border-t border-gray-200 dark:border-gray-700">
+    <footer className="bg-gray-50 dark:bg-gray-900 border-t border-gray-200 dark:border-gray-700">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {/* Left: Logo & About */}
@@ -23,29 +35,35 @@ export default function Footer() {
             </h3>
             <ul className="space-y-2">
               <li>
-                <Link
-                  href="/"
-                  className="text-gray-600 dark:text-gray-400 hover:text-blue-500"
-                >
+                <Link href="/" className={isActive("/")}>
                   Home
                 </Link>
               </li>
               <li>
-                <Link
-                  href="/products"
-                  className="text-gray-600 dark:text-gray-400 hover:text-blue-500"
-                >
+                <Link href="/products" className={isActive("/products")}>
                   Products
                 </Link>
               </li>
-              <li>
-                <Link
-                  href="/login"
-                  className="text-gray-600 dark:text-gray-400 hover:text-blue-500"
-                >
-                  Login
-                </Link>
-              </li>
+              {!session ? (
+                <>
+                  <li>
+                    <Link href="/login" className={isActive("/login")}>
+                      Login
+                    </Link>
+                  </li>
+                  <li>
+                    <Link href="/register" className={isActive("/register")}>
+                      Register
+                    </Link>
+                  </li>
+                </>
+              ) : (
+                <li>
+                  <Link href="/dashboard" className={isActive("/dashboard")}>
+                    Dashboard
+                  </Link>
+                </li>
+              )}
             </ul>
           </div>
 
@@ -58,28 +76,28 @@ export default function Footer() {
               <Link
                 href="https://facebook.com"
                 target="_blank"
-                className="hover:text-blue-600"
+                className="hover:text-blue-600 transition transform hover:scale-110"
               >
                 <FaFacebook />
               </Link>
               <Link
                 href="https://twitter.com"
                 target="_blank"
-                className="hover:text-blue-400"
+                className="hover:text-blue-400 transition transform hover:scale-110"
               >
                 <FaTwitter />
               </Link>
               <Link
                 href="https://github.com"
                 target="_blank"
-                className="hover:text-gray-900 dark:hover:text-white"
+                className="hover:text-gray-900 dark:hover:text-white transition transform hover:scale-110"
               >
                 <FaGithub />
               </Link>
               <Link
                 href="https://linkedin.com"
                 target="_blank"
-                className="hover:text-blue-700"
+                className="hover:text-blue-700 transition transform hover:scale-110"
               >
                 <FaLinkedin />
               </Link>

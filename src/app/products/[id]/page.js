@@ -51,7 +51,7 @@ export default function ProductDetails() {
     return <p className="text-center mt-10 text-red-500">Product not found.</p>;
 
   return (
-    <div className="p-6 min-h-screen bg-gray-100 dark:bg-gray-950 transition">
+    <div className="p-6 min-h-screen bg-gray-50 dark:bg-gray-950 transition">
       <div className="max-w-4xl mx-auto bg-white dark:bg-gray-900 shadow-xl rounded-3xl overflow-hidden hover:shadow-2xl transition duration-500">
         {/* Image Section */}
         <div className="relative w-full h-96 overflow-hidden group">
@@ -59,21 +59,29 @@ export default function ProductDetails() {
             src={product.images?.[0] || "/placeholder.png"}
             alt={product.name}
             fill
-            className="object-cover transform transition-transform duration-500 group-hover:scale-105"
+            className="object-contain transform transition-transform duration-500 group-hover:scale-105"
           />
         </div>
 
         {/* Product Info */}
         <div className="p-8">
-          <h1 className="text-3xl font-extrabold mb-3 text-gray-900 dark:text-gray-100">
+          <h1 className="text-3xl sm:text-4xl font-extrabold mb-3 text-gray-900 dark:text-gray-100">
             {product.name}
           </h1>
-          <p className="text-gray-500 dark:text-gray-400 mb-2">
-            {product.category} • {product.brand}
-          </p>
+
+          <div className="flex flex-wrap items-center gap-3 mb-4">
+            {/* Category Badge */}
+            <span className="px-3 py-1 rounded-full text-sm font-medium bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-300">
+              {product.category}
+            </span>
+            {/* Brand */}
+            <span className="px-3 py-1 rounded-full text-sm font-medium bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-gray-300">
+              {product.brand}
+            </span>
+          </div>
 
           <div className="flex items-center gap-4 mb-4">
-            <p className="text-yellow-500 font-semibold">
+            <p className="text-yellow-500 font-semibold text-lg sm:text-xl">
               ⭐ {product.rating} / 5
             </p>
             <p
@@ -81,7 +89,7 @@ export default function ProductDetails() {
                 product.stock > 0
                   ? "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300"
                   : "bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300"
-              }`}
+              } transition`}
             >
               {product.stock > 0
                 ? `In Stock (${product.stock})`
@@ -89,28 +97,31 @@ export default function ProductDetails() {
             </p>
           </div>
 
-          <p className="text-2xl font-bold text-blue-600 dark:text-blue-400 mb-4">
+          <p className="text-2xl sm:text-3xl font-bold text-gradient bg-clip-text text-blue-600 dark:text-yellow-400 mb-4">
             ${product.price}
           </p>
 
-          <p className="text-gray-700 dark:text-gray-300 mb-6">
+          <p className="text-gray-700 dark:text-gray-300 mb-6 text-lg sm:text-base">
             {product.description}
           </p>
 
           {/* Specs Section */}
           {product.specs && (
             <div className="border-t border-gray-200 dark:border-gray-700 pt-4">
-              <h2 className="text-xl font-semibold mb-2 text-gray-800 dark:text-gray-200">
+              <h2 className="text-2xl font-semibold mb-4 text-gray-800 dark:text-gray-200">
                 Specifications
               </h2>
-              <ul className="list-disc list-inside text-gray-600 dark:text-gray-400 space-y-1">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-gray-600 dark:text-gray-400">
                 {Object.entries(product.specs).map(([key, value]) => (
-                  <li key={key}>
+                  <div
+                    key={key}
+                    className="bg-gray-100 dark:bg-gray-800 px-4 py-2 rounded-xl hover:bg-gray-200 dark:hover:bg-gray-700 transition"
+                  >
                     <span className="font-medium capitalize">{key}:</span>{" "}
                     {value}
-                  </li>
+                  </div>
                 ))}
-              </ul>
+              </div>
             </div>
           )}
         </div>

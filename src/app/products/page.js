@@ -27,30 +27,42 @@ export default function ProductsPage() {
     fetchProducts();
   }, []);
 
-  if (loading) return <p className="text-center mt-10">Loading products...</p>;
+  if (loading)
+    return (
+      <p className="text-center mt-10 text-gray-700 dark:text-gray-300">
+        Loading products...
+      </p>
+    );
   if (error)
     return <p className="text-center text-red-500 mt-10">Error: {error}</p>;
 
   return (
-    <div className="p-6 min-h-screen bg-gray-100 dark:bg-gray-950 transition">
-      <h1 className="text-3xl font-bold mb-8 text-center text-gray-800 dark:text-gray-100">
-        All Products
+    <div className="p-6 min-h-screen bg-gray-50 dark:bg-gray-900 transition">
+      {/* Page Heading */}
+      <h1 className="text-4xl sm:text-5xl font-extrabold mb-8 text-center text-gray-900 dark:text-white">
+        Explore Our{" "}
+        <span className="text-blue-600 dark:text-yellow-400">Tech Gadgets</span>
       </h1>
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+
+      {/* Products Grid */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         {products.map((p) => (
           <div
             key={p._id}
-            className="bg-white dark:bg-gray-900 rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl transition duration-300 flex flex-col"
+            className="bg-white dark:bg-gray-800 rounded-3xl shadow-lg overflow-hidden hover:shadow-2xl transition duration-300 flex flex-col group"
           >
-            <div className="relative w-full h-60">
+            {/* Image */}
+            <div className="relative w-full h-60 overflow-hidden rounded-t-3xl">
               <Image
                 src={p.images?.[0] || "/placeholder.png"}
                 alt={p.name}
                 fill
-                className="object-cover"
+                className="object-contain transition-transform duration-500 group-hover:scale-105"
               />
             </div>
-            <div className="p-5 flex flex-col flex-grow">
+
+            {/* Product Info */}
+            <div className="p-6 flex flex-col flex-grow">
               <div className="flex-grow">
                 <h2 className="text-xl font-semibold mb-1 text-gray-900 dark:text-gray-100">
                   {p.name}
@@ -61,13 +73,13 @@ export default function ProductsPage() {
                 <p className="text-yellow-500 font-medium mt-1">
                   ⭐ {p.rating} / 5
                 </p>
-                <p className="mt-2 text-lg font-bold text-blue-600 dark:text-blue-400">
+                <p className="mt-2 text-lg font-bold text-blue-600 dark:text-yellow-400">
                   ${p.price}
                 </p>
                 <p
-                  className={`mt-1 text-sm ${
+                  className={`mt-1 text-sm font-medium ${
                     p.stock > 0
-                      ? "text-green-600 dark:text-green-400"
+                      ? "text-green-600 dark:text-green-300"
                       : "text-red-500 dark:text-red-400"
                   }`}
                 >
@@ -75,10 +87,10 @@ export default function ProductsPage() {
                 </p>
               </div>
 
-              {/* ✅ Correct Next.js Link */}
+              {/* See Details Button */}
               <Link
                 href={`/products/${p._id}`}
-                className="mt-4 w-full text-center bg-blue-600 hover:bg-blue-700 text-white dark:bg-yellow-500 dark:hover:bg-yellow-600 dark:text-gray-900 font-medium py-2 px-4 rounded-lg transition"
+                className="mt-4 w-full text-center bg-blue-600 hover:bg-blue-700 text-white dark:bg-yellow-400 dark:hover:bg-yellow-500 dark:text-gray-900 font-medium py-2 px-4 rounded-xl transition"
               >
                 See Details
               </Link>

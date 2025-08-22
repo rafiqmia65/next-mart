@@ -28,10 +28,10 @@ export default function Hero() {
               Browse Gadgets
             </Link>
             <Link
-              href="/login"
+              href="/"
               className="px-6 py-3 rounded-lg border border-gray-400 dark:border-gray-600 text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800 transition"
             >
-              Login
+              Contact Us
             </Link>
           </div>
         </div>

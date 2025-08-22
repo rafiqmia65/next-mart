@@ -43,47 +43,58 @@ export default function ProductsPage() {
     return <p className="text-center mt-10 text-red-500">Error: {error}</p>;
 
   return (
-    <section className="bg-gray-50 dark:bg-gray-900 transition min-h-screen p-6">
+    <section className="bg-gray-50 dark:bg-gray-900 min-h-screen transition p-6">
       <div className="max-w-7xl mx-auto">
-        <h1 className="text-4xl sm:text-5xl font-extrabold text-gray-900 dark:text-white text-center mb-10">
+        {/* Page Heading */}
+        <h1 className="text-4xl sm:text-5xl font-extrabold text-gray-900 dark:text-white text-center mb-12">
           Popular{" "}
           <span className="text-blue-600 dark:text-yellow-400">
             Tech Gadgets
           </span>
         </h1>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {/* Products Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
           {products.map((p) => (
             <div
               key={p._id}
-              className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl transition duration-300 flex flex-col"
+              className="bg-white dark:bg-gray-800 rounded-3xl shadow-lg overflow-hidden hover:shadow-2xl transition duration-300 flex flex-col group"
             >
-              <div className="relative w-full h-60">
+              {/* Image */}
+              <div className="relative w-full h-64 overflow-hidden rounded-t-3xl">
                 <Image
                   src={p.images?.[0] || "/placeholder.png"}
                   alt={p.name}
                   fill
-                  className="object-cover"
+                  className="object-contain transition-transform duration-500 group-hover:scale-105"
                 />
               </div>
-              <div className="p-5 flex flex-col flex-grow">
+
+              {/* Product Info */}
+              <div className="p-6 flex flex-col flex-grow">
                 <div className="flex-grow">
-                  <h2 className="text-xl font-semibold mb-1 text-gray-900 dark:text-gray-100">
+                  <h2 className="text-xl font-semibold mb-2 text-gray-900 dark:text-gray-100">
                     {p.name}
                   </h2>
-                  <p className="text-sm text-gray-500 dark:text-gray-400">
-                    {p.category} • {p.brand}
+
+                  {/* Category badge */}
+                  <p className="inline-block mb-2 px-3 py-1 rounded-full text-sm font-medium bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-300">
+                    {p.category}
                   </p>
-                  <p className="text-yellow-500 font-medium mt-1">
+
+                  <p className="text-sm text-gray-500 dark:text-gray-400 mb-1">
+                    Brand: {p.brand}
+                  </p>
+                  <p className="text-yellow-500 font-semibold mb-1">
                     ⭐ {p.rating} / 5
                   </p>
-                  <p className="mt-2 text-lg font-bold text-blue-600 dark:text-yellow-400">
+                  <p className="text-2xl font-bold text-blue-600 dark:text-yellow-400 mb-2">
                     ${p.price}
                   </p>
                   <p
-                    className={`mt-1 text-sm font-medium ${
+                    className={`text-sm font-medium ${
                       p.stock > 0
-                        ? "text-green-600 dark:text-green-400"
+                        ? "text-green-600 dark:text-green-300"
                         : "text-red-500 dark:text-red-400"
                     }`}
                   >
@@ -91,9 +102,10 @@ export default function ProductsPage() {
                   </p>
                 </div>
 
+                {/* See Details Button */}
                 <Link
                   href={`/products/${p._id}`}
-                  className="mt-4 w-full text-center bg-blue-600 hover:bg-blue-700 text-white dark:bg-yellow-500 dark:hover:bg-yellow-600 dark:text-gray-900 font-medium py-2 px-4 rounded-lg transition"
+                  className="mt-4 w-full text-center bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-700 hover:to-blue-600 text-white dark:bg-gradient-to-r dark:from-yellow-400 dark:to-yellow-500 dark:hover:from-yellow-500 dark:hover:to-yellow-600 font-medium py-2 px-4 rounded-xl transition duration-300"
                 >
                   See Details
                 </Link>
