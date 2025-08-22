@@ -3,6 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import LoaderPage from "./LoaderPage";
 
 export default function ProductsPage() {
   const [products, setProducts] = useState([]);
@@ -33,12 +34,7 @@ export default function ProductsPage() {
     fetchProducts();
   }, []);
 
-  if (loading)
-    return (
-      <p className="text-center mt-10 text-gray-700 dark:text-gray-300">
-        Loading products...
-      </p>
-    );
+  if (loading) return <LoaderPage></LoaderPage>;
   if (error)
     return <p className="text-center mt-10 text-red-500">Error: {error}</p>;
 

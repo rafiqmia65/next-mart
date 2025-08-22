@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
+import LoaderPage from "@/app/components/LoaderPage";
 
 export default function ProductDetails() {
   const { id } = useParams();
@@ -41,12 +42,7 @@ export default function ProductDetails() {
     if (id) fetchProduct();
   }, [id]);
 
-  if (loading)
-    return (
-      <p className="text-center mt-10 text-gray-700 dark:text-gray-300">
-        Loading details...
-      </p>
-    );
+  if (loading) return <LoaderPage></LoaderPage>;
   if (!product)
     return <p className="text-center mt-10 text-red-500">Product not found.</p>;
 
