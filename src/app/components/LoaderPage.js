@@ -3,24 +3,30 @@ import { motion } from "framer-motion";
 
 export default function LoaderPage() {
   return (
-    <div className="flex items-center justify-center h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-black">
+    <div
+      className="flex items-center justify-center h-screen 
+      bg-gray-50 dark:bg-gray-900 transition-colors duration-500"
+    >
       <div className="flex flex-col items-center">
-        {/* Glowing Spinner */}
+        {/* Clear Visible Spinner */}
         <motion.div
-          className="w-20 h-20 border-4 border-yellow-400 border-t-transparent rounded-full shadow-[0_0_25px_rgba(250,204,21,0.8)]"
+          className="w-20 h-20 rounded-full border-4 
+          border-blue-600 border-t-transparent 
+          dark:border-yellow-400 dark:border-t-transparent"
           animate={{ rotate: 360 }}
           transition={{
             repeat: Infinity,
-            duration: 1,
+            duration: 0.8, // faster rotation
             ease: "linear",
           }}
         />
 
         {/* Animated Loading Text */}
         <motion.p
-          className="mt-6 text-xl font-semibold text-yellow-400 tracking-widest drop-shadow-lg"
-          animate={{ opacity: [0.3, 1, 0.3], y: [0, -6, 0] }}
-          transition={{ repeat: Infinity, duration: 1.5 }}
+          className="mt-6 text-xl font-semibold tracking-widest 
+          text-blue-600 dark:text-yellow-400"
+          animate={{ opacity: [0.3, 1, 0.3] }}
+          transition={{ repeat: Infinity, duration: 1.2 }}
         >
           Loading...
         </motion.p>
