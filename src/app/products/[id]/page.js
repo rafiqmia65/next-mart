@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
-import LoaderPage from "@/app/components/LoaderPage";
+import LoaderPage from "@/components/LoaderPage";
 
 export default function ProductDetails() {
   const { id } = useParams();

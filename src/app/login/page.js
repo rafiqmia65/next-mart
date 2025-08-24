@@ -2,7 +2,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { FcGoogle } from "react-icons/fc";
-import GoogleAuth from "../components/GoogleAuth";
+import GoogleAuth from "../../components/GoogleAuth";
 
 export default function LoginPage() {
   const router = useRouter();

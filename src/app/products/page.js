@@ -3,7 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import LoaderPage from "../components/LoaderPage";
+import LoaderPage from "../../components/LoaderPage";
 
 export default function ProductsPage() {
   const [products, setProducts] = useState([]);

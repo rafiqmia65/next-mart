@@ -1,5 +1,5 @@
 // app/api/products/route.js
-import dbConnect, { collectionNamesObj } from "../../lib/dbConnect";
+import dbConnect, { collectionNamesObj } from "../../../lib/dbConnect";
 
 export async function GET(req) {
   try {

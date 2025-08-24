@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import GoogleAuth from "../components/GoogleAuth";
+import GoogleAuth from "../../components/GoogleAuth";
 
 export default function Register() {
   const router = useRouter();
